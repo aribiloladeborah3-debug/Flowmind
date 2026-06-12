@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flowmind — Automate the work. Keep the thinking.</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #F0EDE8;
+      --surface:  #FAFAF7;
+      --ink:      #1A1A2E;
+      --ink-mid:  #4A4A6A;
+      --ink-soft: #8A8AAA;
+      --violet:   #6C47FF;
+      --violet-lt:#EDE8FF;
+      --coral:    #FF6B6B;
+      --sage:     #A8B5A2;
+      --border:   rgba(26,26,46,0.1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 6vw;
+      background: rgba(240,237,232,0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      text-decoration: none;
+      display: flex; align-items: center; gap: 0.45rem;
+    }
+
+    .logo-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--violet);
+      display: inline-block;
+    }
+
+    .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+
+    .nav-link {
+      font-size: 0.85rem; font-weight: 500;
+      color: var(--ink-mid); text-decoration: none;
+      transition: color 0.15s;
+    }
+    .nav-link:hover { color: var(--violet); }
+
+    .btn-nav {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600; font-size: 0.82rem;
+      color: #fff; background: var(--violet);
+      padding: 0.5rem 1.2rem;
+      border-radius: 100px; text-decoration: none;
+      transition: opacity 0.15s, transform 0.15s;
+    }
+    .btn-nav:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      padding: 9rem 6vw 5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    @media (max-width: 820px) {
+      .hero { grid-template-columns: 1fr; padding-top: 8rem; }
+      .hero-visual { order: -1; height: 260px; }
+    }
+
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--violet-lt);
+      color: var(--violet);
+      font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 0.35rem 0.9rem; border-radius: 100px;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-tag::before {
+      content: '';
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--violet);
+      animation: blink-dot 1.4s ease-in-out infinite;
+    }
+
+    @keyframes blink-dot {
+      0%,100% { opacity: 1; } 50% { opacity: 0.3; }
+    }
+
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.4rem, 4.5vw, 4rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.04em;
+      margin-bottom: 1.4rem;
+    }
+
+    h1 .accent { color: var(--violet); }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--ink-mid);
+      line-height: 1.7;
+      max-width: 460px;
+      margin-bottom: 2.2rem;
+    }
+
+    .hero-actions {
+      display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600; font-size: 0.95rem;
+      background: var(--violet); color: #fff;
+      padding: 0.85rem 1.8rem; border-radius: 100px;
+      text-decoration: none; border: none; cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(108,71,255,0.3);
+    }
+
+    .btn-ghost {
+      font-size: 0.88rem; font-weight: 500;
+      color: var(--ink-mid); text-decoration: none;
+      display: flex; align-items: center; gap: 0.4rem;
+      transition: color 0.15s;
+    }
+    .btn-ghost:hover { color: var(--violet); }
+
+    .hero-proof {
+      margin-top: 2.5rem;
+      display: flex; align-items: center; gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .avatar-stack { display: flex; }
+    .avatar-stack .av {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 2px solid var(--bg);
+      margin-left: -8px;
+      font-size: 0.7rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff;
+    }
+    .avatar-stack .av:first-child { margin-left: 0; }
+
+    .proof-text { font-size: 0.82rem; color: var(--ink-soft); }
+    .proof-text strong { color: var(--ink); }
+
+    /* ── HERO VISUAL (canvas) ── */
+    .hero-visual {
+      position: relative;
+      height: 420px;
+      border-radius: 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      box-shadow: 0 2px 40px rgba(26,26,46,0.06);
+    }
+
+    .hero-visual canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+    /* ── LOGOS STRIP ── */
+    .logos-strip {
+      padding: 2.2rem 6vw;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logos-label {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--ink-soft);
+      text-align: center; margin-bottom: 1.2rem;
+    }
+
+    .logos-row {
+      display: flex; align-items: center; justify-content: center;
+      gap: 2.5rem; flex-wrap: wrap;
+    }
+
+    .logo-pill {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600; font-size: 0.88rem;
+      color: var(--ink-soft);
+      padding: 0.35rem 0.9rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      letter-spacing: -0.01em;
+    }
+
+    /* ── PROBLEMS ── */
+    .problems {
+      padding: 6rem 6vw;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    @media (max-width: 760px) { .problems { grid-template-columns: 1fr; gap: 2.5rem; } }
+
+    .eyebrow {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--violet);
+      margin-bottom: 0.9rem;
+    }
+
+    .section-h {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.7rem, 3vw, 2.4rem);
+      font-weight: 700; letter-spacing: -0.03em;
+      line-height: 1.2; margin-bottom: 1.4rem;
+    }
+
+    .section-p { font-size: 0.95rem; color: var(--ink-mid); line-height: 1.75; }
+
+    .pain-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+
+    .pain-item {
+      display: flex; align-items: flex-start; gap: 0.85rem;
+      padding: 1.1rem 1.2rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    .pain-icon {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: #FFE8E8; color: var(--coral);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem; flex-shrink: 0;
+    }
+
+    .pain-item p { font-size: 0.88rem; color: var(--ink-mid); line-height: 1.55; }
+    .pain-item strong { color: var(--ink); font-weight: 600; display: block; margin-bottom: 0.2rem; }
+
+    /* ── FEATURES ── */
+    .features {
+      padding: 5rem 6vw 7rem;
+      background: var(--ink);
+      color: #fff;
+    }
+
+    .features .eyebrow { color: #9B7FFF; }
+
+    .features .section-h { color: #fff; }
+
+    .features-intro {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      gap: 2rem; flex-wrap: wrap; margin-bottom: 3.5rem;
+    }
+
+    .features-sub {
+      font-size: 0.95rem; color: rgba(255,255,255,0.55);
+      line-height: 1.7; max-width: 380px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(255,255,255,0.07);
+    }
+
+    @media (max-width: 760px) { .features-grid { grid-template-columns: 1fr; } }
+
+    .feat {
+      background: var(--ink);
+      padding: 2.2rem 1.8rem;
+      transition: background 0.2s;
+    }
+    .feat:hover { background: #23233E; }
+
+    .feat-icon {
+      width: 42px; height: 42px; border-radius: 10px;
+      background: rgba(108,71,255,0.15);
+      border: 1px solid rgba(108,71,255,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; margin-bottom: 1.3rem;
+    }
+
+    .feat h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem; font-weight: 600;
+      color: #fff; margin-bottom: 0.6rem;
+      letter-spacing: -0.02em;
+    }
+
+    .feat p { font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.7; }
+
+    /* ── HOW ── */
+    .how {
+      padding: 7rem 6vw;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    @media (max-width: 760px) { .how { grid-template-columns: 1fr; gap: 3rem; } }
+
+    .steps-list { display: flex; flex-direction: column; gap: 0; }
+
+    .step {
+      display: flex; gap: 1.2rem;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .step:last-child { border-bottom: none; }
+
+    .step-num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.72rem; font-weight: 700;
+      color: var(--violet);
+      background: var(--violet-lt);
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 0.1rem;
+    }
+
+    .step h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600; font-size: 0.95rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .step p { font-size: 0.85rem; color: var(--ink-mid); line-height: 1.65; }
+
+    /* stat card panel */
+    .stat-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.2rem;
+      display: flex; flex-direction: column; gap: 1.2rem;
+    }
+
+    .stat-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1.2rem;
+      background: var(--bg);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .stat-label { font-size: 0.82rem; color: var(--ink-mid); }
+
+    .stat-val {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700; font-size: 1.3rem;
+      color: var(--ink); letter-spacing: -0.03em;
+    }
+
+    .stat-val .unit { font-size: 0.75rem; font-weight: 500; color: var(--ink-soft); margin-left: 2px; }
+
+    .stat-badge {
+      font-size: 0.7rem; font-weight: 600; color: #2D9E5F;
+      background: #E6F7EE; padding: 0.2rem 0.6rem; border-radius: 100px;
+    }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials {
+      padding: 5rem 6vw 6rem;
+      background: var(--violet);
+      color: #fff;
+    }
+
+    .testimonials .eyebrow { color: rgba(255,255,255,0.6); }
+    .testimonials .section-h { color: #fff; margin-bottom: 3rem; }
+
+    .t-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .t-card {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+      padding: 1.8rem;
+      backdrop-filter: blur(8px);
+    }
+
+    .t-stars { color: #FFD700; font-size: 0.85rem; margin-bottom: 1rem; }
+
+    .t-card blockquote {
+      font-size: 0.9rem; line-height: 1.7;
+      color: rgba(255,255,255,0.9);
+      font-style: italic; margin-bottom: 1.2rem;
+    }
+
+    .t-author { display: flex; align-items: center; gap: 0.8rem; }
+
+    .t-av {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.78rem; color: var(--violet);
+      background: #fff; flex-shrink: 0;
+    }
+
+    .t-name { font-weight: 600; font-size: 0.82rem; }
+    .t-role { font-size: 0.75rem; opacity: 0.65; }
+
+    /* ── WAITLIST ── */
+    .waitlist {
+      padding: 8rem 6vw;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+
+    .waitlist::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(108,71,255,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .waitlist .section-h { max-width: 580px; margin-bottom: 0.9rem; }
+
+    .waitlist-sub {
+      font-size: 1rem; color: var(--ink-mid); line-height: 1.7;
+      max-width: 420px; margin-bottom: 2.5rem;
+    }
+
+    .wl-slots {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--violet-lt); color: var(--violet);
+      font-size: 0.78rem; font-weight: 600;
+      padding: 0.4rem 1rem; border-radius: 100px;
+      margin-bottom: 1.8rem;
+    }
+
+    .wl-bar-wrap {
+      width: 100%; max-width: 380px;
+      height: 4px; background: rgba(108,71,255,0.15);
+      border-radius: 2px; margin-bottom: 2rem;
+      overflow: hidden;
+    }
+
+    .wl-bar {
+      height: 100%; width: 78%;
+      background: var(--violet);
+      border-radius: 2px;
+      animation: fill-bar 1.2s ease-out both;
+    }
+
+    @keyframes fill-bar { from { width: 0; } to { width: 78%; } }
+
+    .wl-form {
+      display: flex; flex-direction: column; gap: 0.7rem;
+      width: 100%; max-width: 420px;
+      align-items: stretch;
+    }
+
+    .wl-form-row {
+      display: flex; gap: 0.6rem;
+    }
+
+    .wl-form input {
+      flex: 1;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 100px;
+      padding: 0.85rem 1.4rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.92rem;
+      color: var(--ink); outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+    .wl-form input::placeholder { color: var(--ink-soft); }
+    .wl-form input:focus { border-color: var(--violet); }
+
+    .wl-form button {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600; font-size: 0.92rem;
+      background: var(--violet); color: #fff;
+      padding: 0.85rem 1.6rem;
+      border-radius: 100px; border: none; cursor: pointer;
+      white-space: nowrap; width: 100%;
+      display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .wl-form button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(108,71,255,0.3);
+    }
+    .wl-form button:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+    .wl-success {
+      display: none; align-items: center; gap: 0.6rem;
+      color: var(--violet); font-weight: 600; font-size: 0.95rem;
+    }
+
+    .wl-fine {
+      margin-top: 1rem;
+      font-size: 0.74rem; color: var(--ink-soft);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 6vw;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+    }
+
+    footer p { font-size: 0.78rem; color: var(--ink-soft); }
+
+    footer a { color: var(--ink-soft); text-decoration: none; transition: color 0.15s; }
+    footer a:hover { color: var(--violet); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .btn-primary:hover, .wl-form button:hover, .btn-nav:hover { transform: none; }
+      .wl-bar { animation: none; width: 78%; }
+      @keyframes blink-dot { }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo"><span class="logo-dot"></span>Flowmind</a>
+  <div class="nav-right">
+    <a href="#how" class="nav-link">How it works</a>
+    <a href="#features" class="nav-link">Features</a>
+    <a href="#waitlist" class="btn-nav">Get free access</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">AI Automation · Free Early Access — No card needed</div>
+    <h1>Stop doing work<br />a <span class="accent">machine</span> can<br />do better.</h1>
+    <p class="hero-sub">Flowmind builds AI-powered workflows that run your repetitive business tasks automatically — so you can spend your hours on the work that actually moves the needle.</p>
+    <div class="hero-actions">
+      <a href="#waitlist" class="btn-primary">
+        Get free early access
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="#how" class="btn-ghost">
+        See how it works
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M4 9l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+    <div class="hero-proof">
+      <div class="avatar-stack">
+        <div class="av" style="background:#6C47FF">AO</div>
+        <div class="av" style="background:#FF6B6B">TM</div>
+        <div class="av" style="background:#2D9E5F">BK</div>
+        <div class="av" style="background:#F5A623">CJ</div>
+        <div class="av" style="background:#4A90D9">RL</div>
+      </div>
+      <p class="proof-text"><strong>940+ founders</strong> already on the waitlist</p>
+    </div>
+  </div>
+
+  <!-- ANIMATED WORKFLOW CANVAS -->
+  <div class="hero-visual">
+    <canvas id="workflow-canvas"></canvas>
+  </div>
+</section>
+
+<!-- LOGOS -->
+<div class="logos-strip">
+  <p class="logos-label">Connects with the tools you already use</p>
+  <div class="logos-row">
+    <span class="logo-pill">Slack</span>
+    <span class="logo-pill">Notion</span>
+    <span class="logo-pill">Gmail</span>
+    <span class="logo-pill">Airtable</span>
+    <span class="logo-pill">Zapier</span>
+    <span class="logo-pill">HubSpot</span>
+    <span class="logo-pill">Shopify</span>
+  </div>
+</div>
+
+<!-- PROBLEMS -->
+<section class="problems">
+  <div>
+    <p class="eyebrow">The problem</p>
+    <h2 class="section-h">Your best hours are going to the wrong work.</h2>
+    <p class="section-p">The average founder spends 3–4 hours a day on tasks that follow the same pattern every single time. Flowmind maps those patterns and runs them on autopilot — without code, without hiring, without thinking about it again.</p>
+  </div>
+  <ul class="pain-list">
+    <li class="pain-item">
+      <div class="pain-icon">📥</div>
+      <div>
+        <strong>Manual data entry</strong>
+        <p>Moving information between tools by hand — forms, spreadsheets, CRMs — takes hours and introduces errors every time.</p>
+      </div>
+    </li>
+    <li class="pain-item">
+      <div class="pain-icon">🔁</div>
+      <div>
+        <strong>Repetitive follow-ups</strong>
+        <p>Chasing invoices, onboarding emails, status updates. The same messages, sent to different people, week after week.</p>
+      </div>
+    </li>
+    <li class="pain-item">
+      <div class="pain-icon">📊</div>
+      <div>
+        <strong>Reporting and summaries</strong>
+        <p>Compiling weekly reports, pulling metrics, formatting updates for stakeholders — done manually when it could be done while you sleep.</p>
+      </div>
+    </li>
+  </ul>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="features-intro">
+    <div>
+      <p class="eyebrow">What Flowmind does</p>
+      <h2 class="section-h" style="color:#fff; max-width:420px;">Automation that actually understands your business.</h2>
+    </div>
+    <p class="features-sub">Most automation tools require you to think like an engineer. Flowmind reads your existing workflows and builds the automations for you.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feat">
+      <div class="feat-icon">🧠</div>
+      <h3>Workflow Intelligence</h3>
+      <p>Describe a task in plain English. Flowmind maps it to a workflow, identifies the tools involved, and builds the automation — no flowcharts required.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">⚡</div>
+      <h3>Instant Triggers</h3>
+      <p>Set automations to fire when something happens: a form is filled, a payment lands, a message arrives. Real-time responses without real-time effort.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">🔌</div>
+      <h3>Native Integrations</h3>
+      <p>Connect your stack in minutes — Slack, Notion, Gmail, Airtable, HubSpot, Shopify, and more. No middleware, no API keys.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">📋</div>
+      <h3>Smart Templates</h3>
+      <p>Start from pre-built automation templates for the most common business processes. Edit, extend, or use them as-is from day one.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">🛡️</div>
+      <h3>Error Handling</h3>
+      <p>When something breaks, Flowmind tells you exactly what happened and suggests the fix — in plain language, not error codes.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">📈</div>
+      <h3>Time Saved Dashboard</h3>
+      <p>See exactly how many hours your automations have freed up this week, this month, since you started. Numbers you'll actually want to share.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div>
+    <p class="eyebrow">How it works</p>
+    <h2 class="section-h">From manual task to running automation in under 10 minutes.</h2>
+    <p class="section-p" style="margin-bottom:2.5rem;">No engineers. No consultants. No diagrams. Just describe the work and let Flowmind handle the rest.</p>
+  </div>
+  <div>
+    <div class="stat-panel" style="margin-bottom:2rem;">
+      <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:0.85rem;color:var(--ink-soft);margin-bottom:0.4rem;">This week, Flowmind saved you</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:2.4rem;letter-spacing:-0.04em;color:var(--violet);">14.5 <span style="font-size:1rem;color:var(--ink-soft);font-weight:500;">hours</span></div>
+      <div class="stat-row">
+        <span class="stat-label">Emails auto-sent</span>
+        <div style="display:flex;align-items:center;gap:0.6rem;">
+          <span class="stat-val">84 <span class="unit">msgs</span></span>
+          <span class="stat-badge">↑ 12%</span>
+        </div>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Data entries automated</span>
+        <div style="display:flex;align-items:center;gap:0.6rem;">
+          <span class="stat-val">312 <span class="unit">rows</span></span>
+          <span class="stat-badge">↑ 8%</span>
+        </div>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Reports generated</span>
+        <div style="display:flex;align-items:center;gap:0.6rem;">
+          <span class="stat-val">7 <span class="unit">reports</span></span>
+          <span class="stat-badge">On time</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="steps-list">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div>
+        <h4>Describe the task</h4>
+        <p>Tell Flowmind what you're doing manually: "When a new lead fills our form, add them to HubSpot, send a welcome email, and notify the sales team on Slack."</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div>
+        <h4>Flowmind builds the workflow</h4>
+        <p>The AI maps out every step, connects your tools, and shows you the automation before it runs. Review it, tweak it, approve it.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div>
+        <h4>Turn it on and walk away</h4>
+        <p>Your automation runs in the background — every time, on time, without you. Check the dashboard whenever you want to see what it handled.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <p class="eyebrow">Early access voices</p>
+  <h2 class="section-h">Teams getting their time back.</h2>
+  <div class="t-grid">
+    <div class="t-card">
+      <div class="t-stars">★★★★★</div>
+      <blockquote>I described our client onboarding process in one paragraph. Twenty minutes later it was running on its own. I've been trying to do that with Zapier for two years.</blockquote>
+      <div class="t-author">
+        <div class="t-av">OA</div>
+        <div>
+          <p class="t-name">Obiageli A.</p>
+          <p class="t-role">Operations lead, Lagos</p>
+        </div>
+      </div>
+    </div>
+    <div class="t-card">
+      <div class="t-stars">★★★★★</div>
+      <blockquote>My team was spending 6 hours a week on reporting. Flowmind got that to zero. The dashboard showing hours saved is genuinely motivating.</blockquote>
+      <div class="t-author">
+        <div class="t-av">TM</div>
+        <div>
+          <p class="t-name">Tom M.</p>
+          <p class="t-role">Founder, e-commerce brand, Manchester</p>
+        </div>
+      </div>
+    </div>
+    <div class="t-card">
+      <div class="t-stars">★★★★★</div>
+      <blockquote>I'm not technical at all. But I set up four automations in my first session. The plain-English interface makes it feel like talking to an assistant, not programming a computer.</blockquote>
+      <div class="t-author">
+        <div class="t-av">CJ</div>
+        <div>
+          <p class="t-name">Chiamaka J.</p>
+          <p class="t-role">Solo consultant, Abuja</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST -->
+<section class="waitlist" id="waitlist">
+  <div class="wl-slots">
+    <span style="width:6px;height:6px;border-radius:50%;background:var(--violet);display:inline-block;"></span>
+    78% of free spots claimed — 60 remaining
+  </div>
+  <div class="wl-bar-wrap"><div class="wl-bar"></div></div>
+  <p class="eyebrow">Free Early Access</p>
+  <h2 class="section-h">Join free. Be first. Shape what Flowmind becomes.</h2>
+  <p class="waitlist-sub">Early access is completely free — no credit card, no commitment. Founding members also get 3 months free when we launch paid plans, plus a founding price locked in forever.</p>
+
+  <!-- ✏️ MAILCHIMP SETUP: Replace the action URL below with yours.
+       How to find it:
+       1. Go to Mailchimp → Audience → Signup forms → Embedded forms
+       2. Copy the form action URL — looks like:
+          https://yourname.us21.list-manage.com/subscribe/post?u=XXXXX&id=YYYYY
+       3. Paste it in action="" below.
+       4. Change ?u=... to ?u=... and keep &id=... the same but append &output=json
+       The script below handles the rest automatically. -->
+  <div class="wl-form" id="wl-form">
+    <div class="wl-form-row">
+      <input
+        type="text"
+        id="wl-fname"
+        placeholder="First name"
+        autocomplete="given-name"
+        aria-label="First name"
+      />
+      <input
+        type="text"
+        id="wl-lname"
+        placeholder="Last name"
+        autocomplete="family-name"
+        aria-label="Last name"
+      />
+    </div>
+    <input
+      type="email"
+      id="wl-email"
+      placeholder="your@email.com"
+      autocomplete="email"
+      aria-label="Email address"
+    />
+    <button id="wl-btn" onclick="submitToMailchimp()">
+      <span id="wl-btn-label">Claim my spot</span>
+      <svg id="wl-spinner" width="16" height="16" viewBox="0 0 16 16" fill="none"
+        style="display:none; animation: spin 0.8s linear infinite;">
+        <circle cx="8" cy="8" r="6" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+        <path d="M8 2a6 6 0 0 1 6 6" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="wl-success" id="wl-success">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+      <circle cx="9" cy="9" r="8" stroke="#6C47FF" stroke-width="1.5"/>
+      <path d="M5.5 9l2.5 2.5 4.5-4.5" stroke="#6C47FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span id="wl-success-msg">You're in — completely free. We'll reach out when your spot opens.</span>
+  </div>
+
+  <div class="wl-error" id="wl-error" style="display:none; color:#FF6B6B; font-size:0.82rem; margin-top:0.5rem; max-width:400px; text-align:center;">
+  </div>
+
+  <p class="wl-fine">100% free. No credit card. No commitment. Unsubscribe anytime.<br/>
+    <span style="color:var(--violet); font-weight:500;">Powered by Mailchimp.</span>
+  </p>
+
+  <!-- ✏️ Replace this URL with your actual Mailchimp post URL -->
+  <form id="mc-form" style="display:none;"
+    action="https://YOUR-DOMAIN.us21.list-manage.com/subscribe/post?u=YOUR_U_VALUE&amp;id=YOUR_LIST_ID"
+    method="post">
+    <input type="email" name="EMAIL" id="mc-email" />
+    <input type="hidden" name="tags" value="waitlist" />
+    <!-- Mailchimp bot protection — do not remove -->
+    <div style="position:absolute;left:-5000px;" aria-hidden="true">
+      <input type="text" name="b_YOUR_U_VALUE_YOUR_LIST_ID" tabindex="-1" value="" />
+    </div>
+  </form>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="logo"><span class="logo-dot"></span>Flowmind</a>
+  <p>© 2026 Flowmind Inc. Automation for people, not engineers.</p>
+  <div style="display:flex;gap:1.5rem;">
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="mailto:hello@flowmind.ai">hello@flowmind.ai</a>
+  </div>
+</footer>
+
+<script>
+/* ── Animated Workflow Canvas ── */
+(function() {
+  const canvas = document.getElementById('workflow-canvas');
+  const ctx = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const VIOLET = '#6C47FF';
+  const VIOLET_LT = 'rgba(108,71,255,0.12)';
+  const INK = '#1A1A2E';
+  const INK_MID = '#4A4A6A';
+  const SAGE = '#A8B5A2';
+
+  const nodes = [
+    { id: 0, label: 'New Lead', icon: '📥', x: 0.18, y: 0.22 },
+    { id: 1, label: 'Add to CRM', icon: '🗂️', x: 0.5,  y: 0.18 },
+    { id: 2, label: 'Send Email', icon: '✉️', x: 0.82, y: 0.22 },
+    { id: 3, label: 'Flowmind', icon: '⚡', x: 0.5,  y: 0.52, hub: true },
+    { id: 4, label: 'Slack Ping', icon: '💬', x: 0.18, y: 0.78 },
+    { id: 5, label: 'Log Report', icon: '📊', x: 0.5,  y: 0.82 },
+    { id: 6, label: 'Tag & Route', icon: '🏷️', x: 0.82, y: 0.78 },
+  ];
+
+  const edges = [
+    [0, 3], [3, 1], [3, 2], [3, 4], [3, 5], [3, 6]
+  ];
+
+  // Animated pulses
+  const pulses = [];
+  let t = 0;
+
+  function spawnPulse() {
+    const edge = edges[Math.floor(Math.random() * edges.length)];
+    pulses.push({ from: edge[0], to: edge[1], prog: 0, speed: 0.012 + Math.random() * 0.008 });
+  }
+
+  setInterval(spawnPulse, 600);
+
+  function draw() {
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+
+    function pos(n) { return { x: n.x * W, y: n.y * H }; }
+
+    // Edges
+    edges.forEach(([a, b]) => {
+      const pa = pos(nodes[a]), pb = pos(nodes[b]);
+      ctx.beginPath();
+      ctx.moveTo(pa.x, pa.y);
+      ctx.lineTo(pb.x, pb.y);
+      ctx.strokeStyle = 'rgba(108,71,255,0.15)';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([5, 5]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    });
+
+    // Pulses
+    for (let i = pulses.length - 1; i >= 0; i--) {
+      const p = pulses[i];
+      const pa = pos(nodes[p.from]), pb = pos(nodes[p.to]);
+      const x = pa.x + (pb.x - pa.x) * p.prog;
+      const y = pa.y + (pb.y - pa.y) * p.prog;
+      const grad = ctx.createRadialGradient(x, y, 0, x, y, 9);
+      grad.addColorStop(0, 'rgba(108,71,255,0.9)');
+      grad.addColorStop(1, 'rgba(108,71,255,0)');
+      ctx.beginPath();
+      ctx.arc(x, y, 9, 0, Math.PI * 2);
+      ctx.fillStyle = grad;
+      ctx.fill();
+      p.prog += p.speed;
+      if (p.prog >= 1) pulses.splice(i, 1);
+    }
+
+    // Nodes
+    nodes.forEach(n => {
+      const { x, y } = pos(n);
+      const r = n.hub ? 42 : 34;
+
+      // Glow for hub
+      if (n.hub) {
+        const g = ctx.createRadialGradient(x, y, 0, x, y, 58);
+        g.addColorStop(0, 'rgba(108,71,255,0.18)');
+        g.addColorStop(1, 'rgba(108,71,255,0)');
+        ctx.beginPath(); ctx.arc(x, y, 58, 0, Math.PI * 2);
+        ctx.fillStyle = g; ctx.fill();
+      }
+
+      // Circle
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fillStyle = n.hub ? VIOLET : '#fff';
+      ctx.fill();
+      ctx.strokeStyle = n.hub ? VIOLET : 'rgba(108,71,255,0.3)';
+      ctx.lineWidth = n.hub ? 0 : 1.5;
+      ctx.stroke();
+
+      // Icon
+      ctx.font = `${n.hub ? 18 : 15}px serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(n.icon, x, y);
+
+      // Label
+      ctx.font = `500 ${n.hub ? 11 : 10}px 'DM Sans', sans-serif`;
+      ctx.fillStyle = n.hub ? '#fff' : INK_MID;
+      ctx.fillText(n.label, x, y + r + 13);
+    });
+
+    t++;
+    requestAnimationFrame(draw);
+  }
+
+  draw();
+})();
+
+/* ── Mailchimp Waitlist Integration ── */
+
+// Spin animation for loading button
+const styleTag = document.createElement('style');
+styleTag.textContent = `@keyframes spin { to { transform: rotate(360deg); } }`;
+document.head.appendChild(styleTag);
+
+function submitToMailchimp() {
+  const fnameInput = document.getElementById('wl-fname');
+  const lnameInput = document.getElementById('wl-lname');
+  const emailInput = document.getElementById('wl-email');
+  const form       = document.getElementById('wl-form');
+  const success    = document.getElementById('wl-success');
+  const errorBox   = document.getElementById('wl-error');
+  const btn        = document.getElementById('wl-btn');
+  const btnLabel   = document.getElementById('wl-btn-label');
+  const spinner    = document.getElementById('wl-spinner');
+  const mcForm     = document.getElementById('mc-form');
+
+  const fname = fnameInput.value.trim();
+  const lname = lnameInput.value.trim();
+  const email = emailInput.value.trim();
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  // Clear previous errors
+  errorBox.style.display = 'none';
+  errorBox.textContent = '';
+  [fnameInput, lnameInput, emailInput].forEach(i => i.style.borderColor = '');
+
+  // Validate
+  if (!fname) {
+    fnameInput.style.borderColor = '#FF6B6B';
+    fnameInput.focus();
+    return;
+  }
+  if (!re.test(email)) {
+    emailInput.style.borderColor = '#FF6B6B';
+    emailInput.focus();
+    return;
+  }
+
+  // Loading state
+  btn.disabled = true;
+  btnLabel.textContent = 'Submitting…';
+  spinner.style.display = 'inline-block';
+
+  // Build Mailchimp JSONP URL with FNAME + LNAME + EMAIL
+  const actionUrl = mcForm.action
+    .replace('/post?', '/post-json?')
+    + '&EMAIL=' + encodeURIComponent(email)
+    + '&FNAME=' + encodeURIComponent(fname)
+    + '&LNAME=' + encodeURIComponent(lname)
+    + '&c=mailchimpCallback';
+
+  // JSONP callback
+  window.mailchimpCallback = function(data) {
+    const script = document.getElementById('mc-jsonp');
+    if (script) script.remove();
+    delete window.mailchimpCallback;
+
+    btn.disabled = false;
+    btnLabel.textContent = 'Claim my spot';
+    spinner.style.display = 'none';
+
+    if (data.result === 'success') {
+      form.style.display = 'none';
+      success.style.display = 'flex';
+      document.getElementById('wl-success-msg').textContent =
+        `You're in${fname ? ', ' + fname : ''} — completely free. We'll reach out when your spot opens.`;
+    } else {
+      let msg = data.msg || 'Something went wrong. Please try again.';
+      msg = msg.replace(/<[^>]*>/g, '').replace(/^\d+ - /, '');
+      if (msg.toLowerCase().includes('already subscribed')) {
+        form.style.display = 'none';
+        success.style.display = 'flex';
+        document.getElementById('wl-success-msg').textContent =
+          `You're already on the list${fname ? ', ' + fname : ''} — free access is reserved for you!`;
+      } else {
+        errorBox.textContent = msg;
+        errorBox.style.display = 'block';
+      }
+    }
+  };
+
+  const script = document.createElement('script');
+  script.id = 'mc-jsonp';
+  script.src = actionUrl;
+  document.body.appendChild(script);
+
+  // Timeout fallback
+  setTimeout(() => {
+    if (window.mailchimpCallback) {
+      const s = document.getElementById('mc-jsonp');
+      if (s) s.remove();
+      delete window.mailchimpCallback;
+      btn.disabled = false;
+      btnLabel.textContent = 'Claim my spot';
+      spinner.style.display = 'none';
+      errorBox.textContent = 'Connection timed out. Please check your internet and try again.';
+      errorBox.style.display = 'block';
+    }
+  }, 8000);
+}
+
+document.getElementById('wl-email').addEventListener('keydown', e => {
+  if (e.key === 'Enter') submitToMailchimp();
+});
+</script>
+</body>
+</html>
